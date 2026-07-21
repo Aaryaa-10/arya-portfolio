@@ -1,0 +1,398 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Arya Amoriya — Full-Stack Developer</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg: #0D0710;
+    --bg-2: #150C19;
+    --surface: #1C1022;
+    --surface-2: #24132C;
+    --line: #3A1C36;
+    --line-soft: #2A1526;
+    --text: #F6EEF4;
+    --text-dim: #B295AE;
+    --accent: #FF2E93;
+    --accent-2: #FF6FB5;
+    --accent-soft: #FFCFE7;
+    --accent-deep: #C2005F;
+    --accent-dim: rgba(255,46,147,0.16);
+    --accent-dim-2: rgba(255,46,147,0.34);
+    --grad: linear-gradient(135deg, #FF0380, #FF7BB8);
+    --radius: 16px;
+    --maxw: 1040px;
+  }
+  *{ box-sizing:border-box; }
+  html{ scroll-behavior:smooth; }
+  @media (prefers-reduced-motion: reduce){ html{ scroll-behavior:auto; } *{ animation-duration:0.01ms !important; transition-duration:0.01ms !important; } }
+  body{
+    margin:0; background:var(--bg); color:var(--text);
+    font-family:'IBM Plex Sans', sans-serif; font-size:16px; line-height:1.6;
+    -webkit-font-smoothing:antialiased;
+    background-image:
+      radial-gradient(ellipse 900px 600px at 15% -10%, rgba(255,46,147,0.14), transparent 60%),
+      radial-gradient(ellipse 700px 500px at 100% 10%, rgba(194,0,95,0.12), transparent 55%);
+    background-attachment:fixed;
+  }
+  h1,h2,h3{ font-family:'Space Grotesk', sans-serif; margin:0; }
+  a{ color:inherit; }
+  .mono{ font-family:'IBM Plex Mono', monospace; }
+  .wrap{ max-width:var(--maxw); margin:0 auto; padding:0 24px; }
+
+  /* NAV */
+  header.nav{ position:sticky; top:0; z-index:50; background:rgba(13,7,16,0.82); backdrop-filter:blur(10px); border-bottom:1px solid var(--line-soft); }
+  .nav-inner{ max-width:var(--maxw); margin:0 auto; padding:16px 24px; display:flex; align-items:center; justify-content:space-between; }
+  .nav-logo{ font-family:'Space Grotesk', sans-serif; font-weight:600; font-size:16px; text-decoration:none; }
+  .nav-links{ display:flex; gap:28px; align-items:center; }
+  .nav-links a{ text-decoration:none; color:var(--text-dim); font-size:14px; font-family:'IBM Plex Mono', monospace; transition:color 0.15s; }
+  .nav-links a:hover{ color:var(--accent-2); }
+  .nav-cta{ background:var(--grad); color:#1A0510 !important; padding:8px 16px; border-radius:8px; font-size:13px; font-weight:600; text-decoration:none; font-family:'IBM Plex Mono', monospace; }
+  @media (max-width:640px){ .nav-links a:not(.nav-cta){ display:none; } }
+
+  /* REVEAL ANIMATION */
+  .reveal{ opacity:0; transform:translateY(22px); transition:opacity 0.7s ease, transform 0.7s ease; }
+  .reveal.in{ opacity:1; transform:translateY(0); }
+
+  /* PIPELINE SECTION LAYOUT */
+  .pipeline-section{ display:grid; grid-template-columns:48px 1fr; gap:28px; max-width:var(--maxw); margin:0 auto; padding:70px 24px 0; }
+  .pipeline-section.tight{ padding-top:36px; }
+  .node-col{ display:flex; flex-direction:column; align-items:center; }
+  .node-dot{ width:12px; height:12px; border-radius:50%; background:var(--grad); box-shadow:0 0 0 5px var(--accent-dim); margin-top:6px; flex-shrink:0; transition:box-shadow 0.25s, transform 0.25s; }
+  .node-line{ flex:1; width:2px; background:var(--line); margin-top:10px; min-height:40px; }
+  .pipeline-section.last .node-line{ opacity:0; }
+  .pipeline-section:hover .node-dot{ box-shadow:0 0 0 7px var(--accent-dim-2), 0 0 20px rgba(255,46,147,0.55); transform:scale(1.3); }
+  @media (max-width:768px){ .pipeline-section{ grid-template-columns:1fr; } .node-col{ display:none; } }
+
+  /* HERO */
+  .hero{ padding-top:44px; }
+  .eyebrow{ font-family:'IBM Plex Mono', monospace; color:var(--accent-2); font-size:12.5px; letter-spacing:0.12em; text-transform:uppercase; margin-bottom:14px; display:block; }
+  .hero h1{ font-size:clamp(30px, 5vw, 46px); font-weight:600; line-height:1.18; letter-spacing:-0.01em; max-width:720px; }
+  .hero h1 .grad-text{ background:var(--grad); -webkit-background-clip:text; background-clip:text; color:transparent; }
+  .hero p.sub{ color:var(--text-dim); font-size:16.5px; max-width:600px; margin:18px 0 0; }
+  .stat-row{ display:flex; flex-wrap:wrap; gap:10px; margin:26px 0 26px; }
+  .stat-chip{ border:1px solid var(--line); background:var(--surface); border-radius:100px; padding:7px 14px; font-size:13px; font-family:'IBM Plex Mono', monospace; color:var(--text-dim); }
+  .stat-chip b{ color:var(--text); font-weight:500; }
+  .cta-row{ display:flex; flex-wrap:wrap; gap:12px; margin-top:8px; }
+  .btn{ display:inline-flex; align-items:center; gap:8px; padding:11px 20px; border-radius:9px; text-decoration:none; font-size:14px; font-weight:500; border:1px solid var(--line); transition:border-color 0.15s, transform 0.15s, box-shadow 0.25s; }
+  .btn:hover{ transform:translateY(-2px); }
+  .btn-primary{ background:var(--grad); color:#1A0510; border-color:transparent; }
+  .btn-primary:hover{ box-shadow:0 6px 24px rgba(255,46,147,0.35); }
+  .btn-ghost{ background:transparent; color:var(--text); }
+  .btn-ghost:hover{ border-color:var(--accent); color:var(--accent-2); }
+
+  /* SECTION HEADS */
+  .section-head{ margin-bottom:24px; }
+  .section-head h2{ font-size:24px; font-weight:600; margin-top:6px; }
+  .section-head p{ color:var(--text-dim); font-size:14.5px; margin-top:8px; max-width:520px; }
+
+  /* FLAGSHIP CARD */
+  .flagship-card{ background:var(--surface); border:1px solid var(--line); border-radius:var(--radius); overflow:hidden; transition:border-color 0.3s, box-shadow 0.3s; }
+  .flagship-card:hover{ border-color:var(--accent-dim-2); box-shadow:0 12px 40px rgba(255,46,147,0.12); }
+  .mock-browser{ background:var(--surface-2); padding:14px 18px; display:flex; gap:8px; align-items:center; border-bottom:1px solid var(--line); }
+  .mock-dot{ width:9px; height:9px; border-radius:50%; background:var(--line); }
+  .mock-body{ padding:22px; display:grid; grid-template-columns:120px 1fr; gap:18px; }
+  @media (max-width:600px){ .mock-body{ grid-template-columns:1fr; } }
+  .mock-gauge{ width:96px; height:96px; border-radius:50%; background:conic-gradient(var(--accent) 0deg 295deg, var(--line) 295deg 360deg); display:flex; align-items:center; justify-content:center; margin:0 auto; }
+  .mock-gauge-inner{ width:70px; height:70px; border-radius:50%; background:var(--surface-2); display:flex; flex-direction:column; align-items:center; justify-content:center; }
+  .mock-gauge-inner b{ font-family:'Space Grotesk'; font-size:18px; }
+  .mock-gauge-inner span{ font-size:9px; color:var(--text-dim); font-family:'IBM Plex Mono'; }
+  .mock-bars{ display:flex; flex-direction:column; gap:10px; justify-content:center; }
+  .mock-bar{ height:10px; border-radius:6px; background:var(--surface-2); position:relative; overflow:hidden; }
+  .mock-bar::after{ content:''; position:absolute; left:0; top:0; bottom:0; background:var(--grad); }
+  .mock-bar.b1::after{ width:78%; } .mock-bar.b2::after{ width:52%; } .mock-bar.b3::after{ width:64%; } .mock-bar.b4::after{ width:38%; }
+  .mock-caption{ text-align:center; font-size:11.5px; color:var(--text-dim); font-family:'IBM Plex Mono'; padding:0 22px 18px; }
+  .flagship-text{ padding:26px; }
+  .flagship-text h3{ font-size:21px; font-weight:600; }
+  .flagship-text p{ color:var(--text-dim); font-size:15px; margin:12px 0 16px; max-width:660px; }
+  .flagship-links{ font-family:'IBM Plex Mono', monospace; font-size:13px; margin-bottom:16px; }
+  .flagship-links a{ text-decoration:none; color:var(--accent-2); }
+  .flagship-links a:hover{ text-decoration:underline; }
+  .flagship-links span.sep{ color:var(--text-dim); margin:0 8px; }
+  .tag-row{ display:flex; flex-wrap:wrap; gap:8px; margin-bottom:16px; }
+  .tag{ font-family:'IBM Plex Mono', monospace; font-size:11.5px; color:var(--text-dim); border:1px solid var(--line); padding:4px 10px; border-radius:6px; }
+  .flagship-text ul{ margin:0; padding-left:18px; color:var(--text-dim); font-size:14.5px; }
+  .flagship-text li{ margin-bottom:6px; }
+  .flagship-text li::marker{ color:var(--accent-2); }
+
+  /* PROJECT GRID */
+  .proj-grid{ display:grid; grid-template-columns:repeat(3, 1fr); gap:16px; }
+  @media (max-width:900px){ .proj-grid{ grid-template-columns:repeat(2, 1fr); } }
+  @media (max-width:640px){ .proj-grid{ grid-template-columns:1fr; } }
+  .proj-card{ background:var(--surface); border:1px solid var(--line); border-radius:var(--radius); padding:20px; transition:border-color 0.25s, transform 0.25s, box-shadow 0.25s; display:flex; flex-direction:column; position:relative; overflow:hidden; }
+  .proj-card::before{ content:''; position:absolute; inset:0; background:var(--grad); opacity:0; transition:opacity 0.25s; pointer-events:none; }
+  .proj-card:hover{ border-color:var(--accent-dim-2); transform:translateY(-4px); box-shadow:0 14px 34px rgba(255,46,147,0.14); }
+  .proj-card .stack-badge{ position:absolute; top:14px; right:14px; font-family:'IBM Plex Mono'; font-size:10px; color:var(--accent-soft); background:var(--accent-dim); border:1px solid var(--accent-dim-2); padding:3px 8px; border-radius:100px; letter-spacing:0.04em; }
+  .proj-card h3{ font-size:17px; font-weight:600; margin-bottom:8px; padding-right:70px; }
+  .proj-card p{ color:var(--text-dim); font-size:13.8px; margin:0 0 14px; flex-grow:1; }
+  .proj-card .tag-row{ margin-bottom:14px; }
+  .proj-links{ font-family:'IBM Plex Mono', monospace; font-size:12.5px; display:flex; gap:14px; }
+  .proj-links a{ text-decoration:none; color:var(--accent-2); }
+  .proj-links a:hover{ text-decoration:underline; }
+  .proj-links .disabled{ color:var(--text-dim); opacity:0.55; }
+
+  .extra-note{ margin-top:16px; font-size:14px; color:var(--text-dim); border-top:1px solid var(--line); padding-top:16px; }
+  .extra-note a{ color:var(--accent-2); text-decoration:none; }
+  .extra-note a:hover{ text-decoration:underline; }
+  .extra-note b{ color:var(--text); }
+
+  /* SKILLS */
+  .skill-group{ margin-bottom:16px; }
+  .skill-group .label{ font-family:'IBM Plex Mono', monospace; font-size:12px; color:var(--accent-2); letter-spacing:0.05em; text-transform:uppercase; margin-bottom:8px; display:block; }
+  .chip-row{ display:flex; flex-wrap:wrap; gap:8px; }
+  .chip{ font-size:13.5px; padding:6px 12px; border-radius:100px; border:1px solid var(--line); background:var(--surface); color:var(--text-dim); transition:border-color 0.2s, color 0.2s; }
+  .chip:hover{ border-color:var(--accent-dim-2); color:var(--text); }
+
+  /* ABOUT */
+  .about-card{ background:var(--surface); border:1px solid var(--line); border-radius:var(--radius); padding:26px; }
+  .about-bio{ color:var(--text-dim); font-size:14.8px; margin-bottom:22px; }
+  .about-bio p{ margin:0 0 14px; }
+  .about-row{ display:flex; gap:14px; padding:12px 0; border-bottom:1px solid var(--line); }
+  .about-row:last-child{ border-bottom:none; }
+  .about-row .k{ font-family:'IBM Plex Mono', monospace; font-size:12px; color:var(--text-dim); width:100px; flex-shrink:0; padding-top:2px; }
+  .about-row .v{ font-size:14.5px; }
+  .about-row .v a{ color:var(--accent-2); text-decoration:none; }
+  .about-row .v a:hover{ text-decoration:underline; }
+
+  /* FOOTER */
+  footer{ margin-top:70px; border-top:1px solid var(--line-soft); padding:44px 24px 60px; }
+  .footer-inner{ max-width:var(--maxw); margin:0 auto; text-align:center; }
+  footer h2{ font-size:22px; margin-bottom:10px; }
+  footer p{ color:var(--text-dim); font-size:14.5px; max-width:440px; margin:0 auto 24px; }
+  .footer-links{ display:flex; justify-content:center; gap:22px; flex-wrap:wrap; margin-bottom:28px; }
+  .footer-links a{ text-decoration:none; color:var(--text); font-family:'IBM Plex Mono', monospace; font-size:13.5px; border-bottom:1px solid var(--line); padding-bottom:2px; transition:border-color 0.2s, color 0.2s; }
+  .footer-links a:hover{ border-color:var(--accent); color:var(--accent-2); }
+  .footer-fine{ color:var(--text-dim); font-size:12px; font-family:'IBM Plex Mono', monospace; }
+</style>
+</head>
+<body>
+
+<header class="nav">
+  <div class="nav-inner">
+    <a class="nav-logo" href="#top">ARYA AMORIYA</a>
+    <nav class="nav-links">
+      <a href="#work">Work</a>
+      <a href="#skills">Skills</a>
+      <a href="#about">About</a>
+      <a href="resume.pdf" class="nav-cta">Resume</a>
+    </nav>
+  </div>
+</header>
+
+<div id="top"></div>
+
+<!-- HERO -->
+<section class="pipeline-section hero">
+  <div class="node-col"><div class="node-dot"></div><div class="node-line"></div></div>
+  <div class="reveal">
+    <span class="eyebrow">Full-Stack Developer — Generative AI Applications</span>
+    <h1>Building <span class="grad-text">intelligent, aesthetic</span> full-stack experiences.</h1>
+    <p class="sub">CS (AI-ML) student at Galgotias University, building full-stack web apps with Next.js and React, and bringing them to life with AI-powered APIs. I care about the whole stack — from stylized, responsive interfaces to the logic and AI underneath. Looking for a Full-Stack / AI-Applications internship — on campus or off.</p>
+    <div class="stat-row">
+      <span class="stat-chip"><b>7</b> shipped apps</span>
+      <span class="stat-chip"><b>159+</b> LeetCode problems solved</span>
+      <span class="stat-chip">flagship build: <b>CareerPilot AI</b></span>
+    </div>
+    <div class="cta-row">
+      <a class="btn btn-primary" href="https://github.com/Aaryaa-10" target="_blank" rel="noopener">View GitHub</a>
+      <a class="btn btn-ghost" href="mailto:aryaamoriya@gmail.com">Email Me</a>
+      <a class="btn btn-ghost" href="resume.pdf" target="_blank" rel="noopener">Download Resume</a>
+    </div>
+  </div>
+</section>
+
+<div id="work"></div>
+
+<!-- FLAGSHIP -->
+<section class="pipeline-section tight">
+  <div class="node-col"><div class="node-dot"></div><div class="node-line"></div></div>
+  <div class="reveal">
+    <div class="section-head">
+      <span class="eyebrow">Flagship Build</span>
+    </div>
+    <div class="flagship-card">
+      <div class="mock-browser"><div class="mock-dot"></div><div class="mock-dot"></div><div class="mock-dot"></div></div>
+      <div class="mock-body">
+        <div class="mock-gauge"><div class="mock-gauge-inner"><b>82</b><span>ATS SCORE</span></div></div>
+        <div class="mock-bars">
+          <div class="mock-bar b1"></div><div class="mock-bar b2"></div><div class="mock-bar b3"></div><div class="mock-bar b4"></div>
+        </div>
+      </div>
+      <p class="mock-caption">— illustrative UI representation, not a live screenshot —</p>
+      <div class="flagship-text">
+        <h3>CareerPilot AI</h3>
+        <p>A full-stack AI career-intelligence platform. Authenticated users upload a PDF resume and get back structured, Gemini-generated insights: ATS compatibility score, strengths and weaknesses, skill-gap analysis, salary predictions, and a personalized learning roadmap.</p>
+        <div class="tag-row">
+          <span class="tag">Next.js</span><span class="tag">TypeScript</span><span class="tag">Prisma</span>
+          <span class="tag">PostgreSQL (Neon)</span><span class="tag">Clerk</span><span class="tag">Gemini API</span>
+        </div>
+        <div class="flagship-links">
+          <a href="https://github.com/Aaryaa-10/careerPilot-ai" target="_blank" rel="noopener">GitHub</a>
+          <span class="sep">/</span>
+          <a href="https://career-pilot-ai-alpha-ten.vercel.app/" target="_blank" rel="noopener">Live Demo</a>
+        </div>
+        <ul>
+          <li>Secure Clerk authentication and server-side PDF processing on Next.js API routes.</li>
+          <li>Per-user analysis history persisted via Prisma ORM on a Neon PostgreSQL database, with full CRUD.</li>
+          <li>Dynamic dashboard connecting frontend, backend, external AI, auth, and database into one deployed app.</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- NEXT.JS + AI-INTEGRATED -->
+<section class="pipeline-section tight">
+  <div class="node-col"><div class="node-dot"></div><div class="node-line"></div></div>
+  <div class="reveal">
+    <div class="section-head">
+      <span class="eyebrow">Next.js × AI-Integrated</span>
+      <h2>Products with a model behind the interface</h2>
+    </div>
+    <div class="proj-grid">
+      <div class="proj-card">
+        <span class="stack-badge">NEXT.JS</span>
+        <h3>HistoryCast AI</h3>
+        <p>AI-moderated debates between historical figures on modern topics — Gemini writes each side, an AI moderator guides the discussion, and every transcript is replayable with speech synthesis.</p>
+        <div class="tag-row"><span class="tag">Next.js 15</span><span class="tag">TypeScript</span><span class="tag">Prisma</span><span class="tag">Gemini API</span></div>
+        <div class="proj-links">
+          <a href="https://github.com/Aaryaa-10/historycast-ai" target="_blank" rel="noopener">GitHub →</a>
+          <a href="https://historycast-ai.vercel.app" target="_blank" rel="noopener">Live Demo →</a>
+        </div>
+      </div>
+      <div class="proj-card">
+        <span class="stack-badge">MERN</span>
+        <h3>AI Startup Validator</h3>
+        <p>Entrepreneurs submit an idea and get an AI-scored evaluation: market potential, scalability, revenue paths, and risk — via the Gemini API.</p>
+        <div class="tag-row"><span class="tag">MERN</span><span class="tag">JWT</span><span class="tag">Gemini API</span></div>
+        <div class="proj-links">
+          <a href="https://github.com/Aaryaa-10/ai-startup-validator" target="_blank" rel="noopener">GitHub →</a>
+          <a href="https://ai-startup-validator-olive.vercel.app" target="_blank" rel="noopener">Live Demo →</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- REACT-BASED PROJECTS -->
+<section class="pipeline-section tight">
+  <div class="node-col"><div class="node-dot"></div><div class="node-line"></div></div>
+  <div class="reveal">
+    <div class="section-head">
+      <span class="eyebrow">React-Based Projects</span>
+      <h2>Frontend craft &amp; full-stack fundamentals</h2>
+    </div>
+    <div class="proj-grid">
+      <div class="proj-card">
+        <span class="stack-badge">REACT</span>
+        <h3>Movie Mania</h3>
+        <p>Real-time movie discovery on the TMDB API, with an "Interested" watchlist (heart-icon add) and a dedicated review page.</p>
+        <div class="tag-row"><span class="tag">React + Vite</span><span class="tag">React Router</span><span class="tag">TMDB API</span></div>
+        <div class="proj-links">
+          <a href="https://github.com/Aaryaa-10/Movie-Mania" target="_blank" rel="noopener">GitHub →</a>
+          <a href="https://celadon-longma-0b2e63.netlify.app/" target="_blank" rel="noopener">Live Demo →</a>
+        </div>
+      </div>
+      <div class="proj-card">
+        <span class="stack-badge">REACT</span>
+        <h3>Fits Gallery</h3>
+        <p>A fashion discovery app for browsing seasonal and themed outfit categories, with likes and favorites persisted via local storage.</p>
+        <div class="tag-row"><span class="tag">React</span><span class="tag">Vite</span><span class="tag">React Hooks</span></div>
+        <div class="proj-links">
+          <a href="https://github.com/Aaryaa-10/Fits-Gallery" target="_blank" rel="noopener">GitHub →</a>
+          <a href="https://elaborate-halva-c04a37.netlify.app/" target="_blank" rel="noopener">Live Demo →</a>
+        </div>
+      </div>
+      <div class="proj-card">
+        <span class="stack-badge">REACT</span>
+        <h3>Book Villa</h3>
+        <p>A book review site with a trending-books homepage, detailed review pages, and an "Add Review" flow for submitting new entries.</p>
+        <div class="tag-row"><span class="tag">React + Vite</span><span class="tag">Local Storage</span></div>
+        <div class="proj-links">
+          <a href="https://github.com/Aaryaa-10/Book-Villa" target="_blank" rel="noopener">GitHub →</a>
+          <a href="https://idyllic-gingersnap-434d55.netlify.app/" target="_blank" rel="noopener">Live Demo →</a>
+        </div>
+      </div>
+      <div class="proj-card">
+        <span class="stack-badge">MERN</span>
+        <h3>Anime Platform</h3>
+        <p>A full-stack anime web app with JWT authentication, a watchlist, genre-based filtering, and personalized recommendations.</p>
+        <div class="tag-row"><span class="tag">React</span><span class="tag">Node.js</span><span class="tag">Express</span><span class="tag">MongoDB</span></div>
+        <div class="proj-links">
+          <a href="https://github.com/Aaryaa-10/anime-platform" target="_blank" rel="noopener">GitHub →</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div id="skills"></div>
+
+<!-- SKILLS -->
+<section class="pipeline-section tight">
+  <div class="node-col"><div class="node-dot"></div><div class="node-line"></div></div>
+  <div class="reveal">
+    <div class="section-head"><span class="eyebrow">Toolkit</span></div>
+    <div class="skill-group"><span class="label">Languages</span><div class="chip-row"><span class="chip">Java</span><span class="chip">JavaScript</span><span class="chip">TypeScript</span></div></div>
+    <div class="skill-group"><span class="label">Frontend</span><div class="chip-row"><span class="chip">React.js</span><span class="chip">Next.js</span><span class="chip">HTML5</span><span class="chip">CSS3</span><span class="chip">Tailwind CSS</span></div></div>
+    <div class="skill-group"><span class="label">Backend</span><div class="chip-row"><span class="chip">Node.js</span><span class="chip">Express.js</span><span class="chip">REST APIs</span><span class="chip">Prisma ORM</span></div></div>
+    <div class="skill-group"><span class="label">Database</span><div class="chip-row"><span class="chip">MongoDB</span><span class="chip">MySQL</span><span class="chip">PostgreSQL</span><span class="chip">Neon</span></div></div>
+    <div class="skill-group"><span class="label">Auth &amp; AI Integration</span><div class="chip-row"><span class="chip">JWT</span><span class="chip">Clerk</span><span class="chip">Google Gemini API</span></div></div>
+    <div class="skill-group"><span class="label">Tools &amp; Platforms</span><div class="chip-row"><span class="chip">Git</span><span class="chip">GitHub</span><span class="chip">Postman</span><span class="chip">Vercel</span><span class="chip">Render</span><span class="chip">Netlify</span></div></div>
+  </div>
+</section>
+
+<div id="about"></div>
+
+<!-- ABOUT -->
+<section class="pipeline-section last">
+  <div class="node-col"><div class="node-dot"></div></div>
+  <div class="reveal">
+    <div class="section-head"><span class="eyebrow">Background</span></div>
+    <div class="about-card">
+      <div class="about-bio">
+        <p>Hi, I'm Arya — a Full-Stack Developer and Computer Science Engineering student specializing in AI &amp; Machine Learning, passionate about building modern, intelligent, and visually compelling digital experiences.</p>
+        <p>My core focus is developing full-stack web applications with Next.js and React, integrating AI-powered APIs to create smarter, more dynamic products. I enjoy working across the entire development process — from designing stylized, responsive interfaces to building the application logic and AI capabilities underneath.</p>
+        <p>I believe great software should be more than functional — it should feel intuitive, intelligent, and thoughtfully designed. Whether I'm building an AI-powered career platform or experimenting with a new product idea, I aim to combine strong engineering, meaningful functionality, and a standout visual experience.</p>
+      </div>
+      <div class="about-row"><div class="k">EDUCATION</div><div class="v">B.Tech, Computer Science Engineering (AI-ML) — Galgotias University, CGPA 7.95, Class of 2027</div></div>
+      <div class="about-row"><div class="k">LEADERSHIP</div><div class="v">Outreach Lead, Women in Engineering — IEEE Student Branch. Led external communications, partnerships, and event visibility.</div></div>
+      <div class="about-row"><div class="k">CERTIFICATION</div><div class="v">Research Intern, SaptKrishi Scientific Pvt. Ltd. — 45-day internship. <a href="https://drive.google.com/file/d/1N0f7ohDJBwdOHVuJ-dJDZHBvxlea2qwJ/view" target="_blank" rel="noopener">View certificate →</a></div></div>
+      <div class="about-row"><div class="k">DSA</div><div class="v">159+ problems solved on LeetCode, focused on arrays, hash tables, DP, and binary search. <a href="https://leetcode.com/u/Aryaa_08/" target="_blank" rel="noopener">View profile →</a></div></div>
+    </div>
+  </div>
+</section>
+
+<footer id="contact">
+  <div class="footer-inner reveal">
+    <h2>Let's build something.</h2>
+    <p>Open to Full-Stack and AI-Applications internships, on campus or off, remote or based in Noida.</p>
+    <div class="footer-links">
+      <a href="mailto:aryaamoriya@gmail.com">Email</a>
+      <a href="https://linkedin.com/in/arya-amoriya" target="_blank" rel="noopener">LinkedIn</a>
+      <a href="https://github.com/Aaryaa-10" target="_blank" rel="noopener">GitHub</a>
+      <a href="https://leetcode.com/u/Aryaa_08/" target="_blank" rel="noopener">LeetCode</a>
+    </div>
+    <div class="footer-fine">© 2026 Arya Amoriya. Built with plain HTML, CSS &amp; JS.</div>
+  </div>
+</footer>
+
+<script>
+  const revealEls = document.querySelectorAll('.reveal');
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach((entry) => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('in');
+        io.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.12 });
+  revealEls.forEach((el) => io.observe(el));
+</script>
+
+</body>
+</html>
